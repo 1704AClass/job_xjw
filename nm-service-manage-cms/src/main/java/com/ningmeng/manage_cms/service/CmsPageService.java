@@ -1,13 +1,19 @@
 package com.ningmeng.manage_cms.service;
 
+import com.alibaba.fastjson.JSON;
 import com.ningmeng.framework.domain.cms.CmsPage;
 import com.ningmeng.framework.domain.cms.request.QueryPageRequest;
+import com.ningmeng.framework.domain.cms.response.CmsCode;
 import com.ningmeng.framework.domain.cms.response.CmsPageResult;
+import com.ningmeng.framework.exception.CustomException;
+import com.ningmeng.framework.exception.ExceptionCast;
 import com.ningmeng.framework.model.response.CommonCode;
 import com.ningmeng.framework.model.response.QueryResponseResult;
 import com.ningmeng.framework.model.response.QueryResult;
 import com.ningmeng.framework.model.response.ResponseResult;
+import com.ningmeng.manage_cms.config.RabbitmqConfig;
 import com.ningmeng.manage_cms.dao.CmsPageRepository;
+import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.ExampleMatcher;
@@ -15,13 +21,41 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
+import java.util.HashMap;
 import java.util.Optional;
 
 @Service
 public class CmsPageService {
     @Autowired
     private CmsPageRepository cmsPageRepository;
+    @Autowired
+    private RabbitTemplate rabbitTemplate;
 
+    public ResponseResult postpage(String pageId)
+    {
+        CmsPage cmsPage = this.findById(pageId);
+        if (cmsPage==null)
+        {
+            ExceptionCast.cast(CommonCode.FAIL);
+        }
+        String siteId = cmsPage.getSiteId();
+        HashMap<String, String> map = new HashMap<>();
+        map.put("pageId",pageId);
+        String msg = JSON.toJSONString(map);
+        boolean flag=createHtml();
+        if(!flag)
+        {
+            ExceptionCast.cast(CommonCode.FAIL);
+
+        }
+        rabbitTemplate.convertAndSend(RabbitmqConfig.EX_ROUTING_CMS_POSTPAGE,siteId,msg);
+        return  new ResponseResult(CommonCode.SUCCESS);
+    }
+    private boolean createHtml()
+    {
+        System.out.println("保存静态页面完成");
+        return true;
+    }
     public QueryResponseResult findList(int page, int size, QueryPageRequest queryPageRequest){
         if(queryPageRequest == null){
             queryPageRequest = new QueryPageRequest();
