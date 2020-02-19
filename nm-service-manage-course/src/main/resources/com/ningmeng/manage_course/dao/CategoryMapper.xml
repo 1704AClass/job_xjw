@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ningmeng.manage_course.dao.CategoryMapper">
+    <resultMap id="categorys" type="com.ningmeng.framework.domain.course.ext.CategoryNode">
+        <id property="id" column="aid"></id>
+        <result property="name" column="aname"></result>
+        <result property="label" column="alabel"></result>
+        <collection property="children" ofType="com.ningmeng.framework.domain.course.ext.CategoryNode">
+            <id property="id" column="bid"></id>
+            <result property="name" column="bname"></result>
+            <result property="label" column="blabel"></result>
+            <collection property="children" ofType="com.ningmeng.framework.domain.course.ext.CategoryNode">
+                <id property="id" column="cid"></id>
+                <result property="name" column="cname"></result>
+                <result property="label" column="clabel"></result>
+            </collection>
+        </collection>
+    </resultMap>
+
+    <select id="findList" resultMap="categorys">
+      select a.id aid,a.name aname,a.label alabel,b.id bid,b.name bname,b.label blabel,c.id cid,c.name cname,c.label clabel
+      from category a LEFT JOIN
+      category b on a.id=b.parentid
+      LEFT JOIN category c ON b.id=c.parentid
+    </select>
+
+</mapper>

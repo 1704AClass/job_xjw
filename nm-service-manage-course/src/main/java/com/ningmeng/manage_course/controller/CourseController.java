@@ -2,7 +2,10 @@ package com.ningmeng.manage_course.controller;
 
 import com.ningmeng.api.courseApi.CourseApi;
 import com.ningmeng.framework.domain.course.Teachplan;
+import com.ningmeng.framework.domain.course.ext.CourseInfo;
 import com.ningmeng.framework.domain.course.ext.TeachplanNode;
+import com.ningmeng.framework.domain.course.request.CourseListRequest;
+import com.ningmeng.framework.model.response.QueryResponseResult;
 import com.ningmeng.framework.model.response.ResponseResult;
 import com.ningmeng.manage_course.service.CourseService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,5 +30,11 @@ public class CourseController implements CourseApi {
     @Override
     public ResponseResult add(@RequestBody Teachplan teachplan) {
         return courseService.add(teachplan);
+    }
+
+    @GetMapping("/findCourseList/page/size")
+    @Override
+    public QueryResponseResult<CourseInfo> findCourseList(int page, int size, @RequestBody CourseListRequest courseListRequest) {
+        return courseService.findCourseList(page,size,courseListRequest);
     }
 }

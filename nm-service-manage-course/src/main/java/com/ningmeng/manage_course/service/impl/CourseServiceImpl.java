@@ -1,17 +1,25 @@
 package com.ningmeng.manage_course.service.impl;
 
+import com.github.pagehelper.Page;
+import com.github.pagehelper.PageHelper;
 import com.ningmeng.framework.domain.course.CourseBase;
 import com.ningmeng.framework.domain.course.Teachplan;
+import com.ningmeng.framework.domain.course.ext.CourseInfo;
 import com.ningmeng.framework.domain.course.ext.TeachplanNode;
+import com.ningmeng.framework.domain.course.request.CourseListRequest;
 import com.ningmeng.framework.exception.ExceptionCast;
 import com.ningmeng.framework.model.response.CommonCode;
+import com.ningmeng.framework.model.response.QueryResponseResult;
+import com.ningmeng.framework.model.response.QueryResult;
 import com.ningmeng.framework.model.response.ResponseResult;
 import com.ningmeng.manage_course.dao.CourseBaseRepository;
+import com.ningmeng.manage_course.dao.CourseMapper;
 import com.ningmeng.manage_course.dao.TeachplanDao;
 import com.ningmeng.manage_course.dao.TeachplanMapper;
 import com.ningmeng.manage_course.service.CourseService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
 import java.util.List;
@@ -29,6 +37,8 @@ public class CourseServiceImpl implements CourseService {
     private TeachplanDao teachplanDao;
     @Autowired
     private CourseBaseRepository courseBaseRepository;
+    @Autowired
+    private CourseMapper courseMapper;
 
 
 
@@ -96,6 +106,22 @@ public class CourseServiceImpl implements CourseService {
 
 
         return new ResponseResult(CommonCode.SUCCESS);
+    }
+
+    @Override
+    @Transactional
+    public QueryResponseResult findCourseList(int page, int size, CourseListRequest courseListRequest) {
+        if (courseListRequest==null)
+        {
+            ExceptionCast.cast(CommonCode.FAIL);
+        }
+        PageHelper.startPage(page,size);
+        Page<CourseInfo> courseListpage = courseMapper.findCourseListpage(courseListRequest);
+        QueryResult queryResult = new QueryResult();
+        queryResult.setList(courseListpage.getResult());
+        queryResult.setTotal(courseListpage.getTotal());
+
+        return new QueryResponseResult(CommonCode.SUCCESS,queryResult);
     }
 
 

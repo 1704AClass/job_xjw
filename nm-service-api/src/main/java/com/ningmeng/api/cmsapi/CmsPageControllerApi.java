@@ -3,6 +3,7 @@ package com.ningmeng.api.cmsapi;
 import com.ningmeng.framework.domain.cms.CmsPage;
 import com.ningmeng.framework.domain.cms.request.QueryPageRequest;
 import com.ningmeng.framework.domain.cms.response.CmsPageResult;
+import com.ningmeng.framework.domain.course.CourseBase;
 import com.ningmeng.framework.model.response.QueryResponseResult;
 import com.ningmeng.framework.model.response.ResponseResult;
 import io.swagger.annotations.Api;
@@ -18,7 +19,7 @@ public interface CmsPageControllerApi {
             @ApiImplicitParam(name = "page",defaultValue = "1",required = true,value = "页数",paramType = "path",dataType = "int"),
             @ApiImplicitParam(name = "size",defaultValue = "5",required = true,value = "每页显示条数",paramType = "path",dataType = "int")
     })
-    public QueryResponseResult findList(int page, int size, QueryPageRequest queryPageRequest);
+    public QueryResponseResult<CourseBase> findList(int page, int size, QueryPageRequest queryPageRequest);
 
     @ApiOperation("添加页面")
     public CmsPageResult add(CmsPage cmsPage);
