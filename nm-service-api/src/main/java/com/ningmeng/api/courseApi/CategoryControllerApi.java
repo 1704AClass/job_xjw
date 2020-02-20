@@ -1,6 +1,7 @@
 package com.ningmeng.api.courseApi;
 
 import com.ningmeng.framework.domain.course.CourseBase;
+import com.ningmeng.framework.domain.course.CourseMarket;
 import com.ningmeng.framework.domain.course.ext.CategoryNode;
 import com.ningmeng.framework.model.response.ResponseResult;
 import io.swagger.annotations.Api;
@@ -11,7 +12,8 @@ public interface CategoryControllerApi {
         @ApiOperation("查询分类")
         public CategoryNode findList();
         @ApiOperation("获取课程基础信息")
-        public CourseBase getCourseBaseById(String courseId) throws RuntimeException;
+        public CourseMarket getCourseBaseById(String courseId) throws RuntimeException;
         @ApiOperation("更新课程基础信息")
         public ResponseResult updateCourseBase(String id, CourseBase courseBase);
+
 }
