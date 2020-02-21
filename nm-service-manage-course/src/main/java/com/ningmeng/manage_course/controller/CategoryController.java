@@ -2,12 +2,13 @@ package com.ningmeng.manage_course.controller;
 
 import com.ningmeng.api.courseApi.CategoryControllerApi;
 import com.ningmeng.framework.domain.course.CourseBase;
+import com.ningmeng.framework.domain.course.CourseMarket;
 import com.ningmeng.framework.domain.course.ext.CategoryNode;
+import com.ningmeng.framework.model.response.CommonCode;
 import com.ningmeng.framework.model.response.ResponseResult;
 import com.ningmeng.manage_course.service.CategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 /**
  * Created by Administrator on 2020/2/19.
@@ -25,7 +26,7 @@ public class CategoryController implements CategoryControllerApi {
     }
 
     @Override
-    public CourseBase getCourseBaseById(String courseId) throws RuntimeException {
+    public CourseMarket getCourseBaseById(String courseId) throws RuntimeException {
         return categoryService.getCourseBaseById(courseId);
     }
 
@@ -33,4 +34,6 @@ public class CategoryController implements CategoryControllerApi {
     public ResponseResult updateCourseBase(String id, CourseBase courseBase) {
         return categoryService.updateCourseBase(id,courseBase);
     }
+
+
 }

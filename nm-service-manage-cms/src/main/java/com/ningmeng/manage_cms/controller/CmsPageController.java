@@ -4,6 +4,7 @@ import com.ningmeng.api.cmsapi.CmsPageControllerApi;
 import com.ningmeng.framework.domain.cms.CmsPage;
 import com.ningmeng.framework.domain.cms.request.QueryPageRequest;
 import com.ningmeng.framework.domain.cms.response.CmsPageResult;
+import com.ningmeng.framework.domain.course.CourseBase;
 import com.ningmeng.framework.model.response.QueryResponseResult;
 import com.ningmeng.framework.model.response.ResponseResult;
 import com.ningmeng.manage_cms.service.CmsPageService;
@@ -19,7 +20,7 @@ public class CmsPageController implements CmsPageControllerApi {
 
     @Override
     @GetMapping("/list/{page}/{size}")
-    public QueryResponseResult findList(@PathVariable("page") int page, @PathVariable("size") int size,@RequestBody QueryPageRequest queryPageRequest) {
+    public QueryResponseResult<CourseBase> findList(@PathVariable("page") int page, @PathVariable("size") int size, @RequestBody QueryPageRequest queryPageRequest) {
         return cmsPageService.findList(page,size,queryPageRequest);
     }
 

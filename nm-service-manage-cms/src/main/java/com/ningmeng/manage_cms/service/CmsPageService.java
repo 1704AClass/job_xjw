@@ -3,9 +3,8 @@ package com.ningmeng.manage_cms.service;
 import com.alibaba.fastjson.JSON;
 import com.ningmeng.framework.domain.cms.CmsPage;
 import com.ningmeng.framework.domain.cms.request.QueryPageRequest;
-import com.ningmeng.framework.domain.cms.response.CmsCode;
 import com.ningmeng.framework.domain.cms.response.CmsPageResult;
-import com.ningmeng.framework.exception.CustomException;
+import com.ningmeng.framework.domain.course.CourseBase;
 import com.ningmeng.framework.exception.ExceptionCast;
 import com.ningmeng.framework.model.response.CommonCode;
 import com.ningmeng.framework.model.response.QueryResponseResult;
@@ -56,7 +55,7 @@ public class CmsPageService {
         System.out.println("保存静态页面完成");
         return true;
     }
-    public QueryResponseResult findList(int page, int size, QueryPageRequest queryPageRequest){
+    public QueryResponseResult<CourseBase> findList(int page, int size, QueryPageRequest queryPageRequest){
         if(queryPageRequest == null){
             queryPageRequest = new QueryPageRequest();
         }
@@ -85,7 +84,7 @@ public class CmsPageService {
         QueryResult<CmsPage> cmsPageQueryResult = new QueryResult<>();
         cmsPageQueryResult.setList(listAll.getContent());
         cmsPageQueryResult.setTotal(listAll.getTotalElements());
-        return new QueryResponseResult(CommonCode.SUCCESS,cmsPageQueryResult);
+        return new QueryResponseResult<CourseBase>(CommonCode.SUCCESS,cmsPageQueryResult);
     }
 
     //添加页面
