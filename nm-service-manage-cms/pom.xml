@@ -15,6 +15,14 @@
 			<artifactId>spring-cloud-starter-netflix-eureka-client</artifactId>
 		</dependency>
 		<dependency>
+			<groupId>org.springframework.cloud</groupId>
+			<artifactId>spring-cloud-starter-openfeign</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>com.netflix.feign</groupId>
+			<artifactId>feign-okhttp</artifactId>
+		</dependency>
+		<dependency>
 			<groupId>com.ningmeng</groupId>
 			<artifactId>nm-service-api</artifactId>
 			<version>1.0-SNAPSHOT</version>
