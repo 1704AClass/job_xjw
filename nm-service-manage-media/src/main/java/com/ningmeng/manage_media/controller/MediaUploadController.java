@@ -16,7 +16,7 @@ import org.springframework.web.multipart.MultipartFile;
  */
 @RestController
 @RequestMapping("/media/upload")
-class MediaController implements ModiaUploadControllerApi {
+class MediaUploadController implements ModiaUploadControllerApi {
 
     @Autowired
     MediaUploadService mediaUploadService;
@@ -39,7 +39,7 @@ class MediaController implements ModiaUploadControllerApi {
     //上传分块
     @PostMapping("/uploadchunk")
     public ResponseResult uploadchunk(@RequestParam("file") MultipartFile file,@RequestParam("chunk") Integer chunk,@RequestParam("fileMd5") String fileMd5) {
-        return mediaUploadService.uploadchunk(file,chunk,fileMd5);
+        return mediaUploadService.uploadchunk(file,fileMd5,chunk);
     }
 
     @Override
