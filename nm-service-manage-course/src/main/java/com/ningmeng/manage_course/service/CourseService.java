@@ -1,10 +1,10 @@
 package com.ningmeng.manage_course.service;
 
+import com.ningmeng.framework.domain.course.CourseView;
 import com.ningmeng.framework.domain.course.Teachplan;
-import com.ningmeng.framework.domain.course.ext.CourseInfo;
 import com.ningmeng.framework.domain.course.ext.TeachplanNode;
 import com.ningmeng.framework.domain.course.request.CourseListRequest;
-import com.ningmeng.framework.model.response.QueryResponseResult;
+import com.ningmeng.framework.domain.course.request.CoursePublishResult;
 import com.ningmeng.framework.model.response.ResponseResult;
 
 /**
@@ -19,4 +19,10 @@ public interface CourseService {
     public ResponseResult add(Teachplan teachplan);
 
     public QueryResponseResult findCourseList(int page, int size, CourseListRequest courseListRequest);
+
+    public CourseView getCoruseView(String id);
+
+    public CoursePublishResult preview(String courseId);
+
+    public CoursePublishResult publish(String courseId);
 }
