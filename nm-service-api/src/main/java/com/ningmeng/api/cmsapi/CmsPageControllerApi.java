@@ -3,8 +3,9 @@ package com.ningmeng.api.cmsapi;
 import com.ningmeng.framework.domain.cms.CmsPage;
 import com.ningmeng.framework.domain.cms.request.QueryPageRequest;
 import com.ningmeng.framework.domain.cms.response.CmsPageResult;
+import com.ningmeng.framework.domain.cms.response.CmsPostPageResult;
 import com.ningmeng.framework.domain.course.CourseBase;
-import com.ningmeng.framework.model.response.QueryResponseResult;
+import com.ningmeng.framework.domain.response.QueryResponseResult;
 import com.ningmeng.framework.model.response.ResponseResult;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
@@ -32,6 +33,8 @@ public interface CmsPageControllerApi {
     public ResponseResult delete(String id);
     @ApiOperation("发布页面接口")
     public ResponseResult post(String pageId);
+    @ApiOperation("一键发布页面")
+    public CmsPostPageResult postPageQuick(CmsPage cmsPage);
 
 
 

@@ -1,10 +1,12 @@
 package com.ningmeng.auth.controller;
 
+import com.netflix.discovery.converters.Auto;
 import com.ningmeng.api.authApi.AuthControllerApi;
 import com.ningmeng.auth.service.AuthService;
 import com.ningmeng.framework.domain.ucenter.ext.AuthToken;
 import com.ningmeng.framework.domain.ucenter.request.LoginRequest;
 import com.ningmeng.framework.domain.ucenter.response.AuthCode;
+import com.ningmeng.framework.domain.ucenter.response.JwtResult;
 import com.ningmeng.framework.domain.ucenter.response.LoginResult;
 import com.ningmeng.framework.exception.ExceptionCast;
 import com.ningmeng.framework.model.response.CommonCode;
@@ -18,7 +20,9 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.Map;
 
 /**
  * Created by Administrator on 2020/3/10.
@@ -37,6 +41,11 @@ public class AuthController implements AuthControllerApi {
     private int tokenValiditySeconds;
     @Autowired
     private AuthService authService;
+    @Autowired
+    private HttpServletRequest request;
+    @Autowired
+    private HttpServletResponse response;
+
 
     @Override
     @PostMapping("/userlogin")
@@ -72,6 +81,36 @@ public class AuthController implements AuthControllerApi {
     @Override
     @PostMapping("/userlogout")
     public ResponseResult logout() {
-        return null;
+        //取出身份令牌
+        String uid = getTokenFormCookie();
+        //删除redis中token
+        authService.delToken(uid);
+        //清除cookie
+        clearCookie(uid);
+        return new ResponseResult(CommonCode.SUCCESS);
+    }
+
+    @Override
+    public JwtResult userjwt() {
+        //获取cookie中的令牌
+        String tokenFormCookie = this.getTokenFormCookie();
+        AuthToken userToken = authService.getUserToken( tokenFormCookie );
+        if(userToken==null)
+        {
+            return new JwtResult( CommonCode.FAIL,null );
+        }
+        return new JwtResult( CommonCode.SUCCESS,userToken.getJwt_token() );
+    }
+    //congcookie中读取访问令牌
+    private String getTokenFormCookie()
+    {
+        Map<String, String> uid = CookieUtil.readCookie( request, "uid" );
+        String uid1 = uid.get( "uid" );
+        return uid1;
+
+    }
+    //清除cookie
+    private void clearCookie(String token){
+        CookieUtil.addCookie(response, cookieDomain, "/", "uid", token, 0, false);
     }
 }
